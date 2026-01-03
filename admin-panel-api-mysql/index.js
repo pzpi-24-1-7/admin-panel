@@ -13,7 +13,7 @@ const complaintManagementRoutes = require("./routes/complaintManagementRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use("/uploads", express.static("uploads")); // Открываем доступ к папке
