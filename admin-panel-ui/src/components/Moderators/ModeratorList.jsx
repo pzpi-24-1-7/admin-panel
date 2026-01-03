@@ -1,6 +1,5 @@
-// src/components/ModeratorList.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import { Link } from "react-router-dom";
 
 function ModeratorList() {
@@ -14,9 +13,7 @@ function ModeratorList() {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(
-          "http://localhost:3001/api/moderators"
-        );
+        const response = await api.get("/moderators");
         setModerators(response.data);
       } catch (err) {
         console.error("Error fetching moderators:", err);
@@ -40,7 +37,7 @@ function ModeratorList() {
     }
 
     try {
-      await axios.delete(`http://localhost:3001/api/moderators/${id}`);
+      await api.delete(`/moderators/${id}`);
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
       console.error("Error deleting moderator:", err);

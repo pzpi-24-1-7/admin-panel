@@ -1,31 +1,24 @@
-// src/components/StatsModActions.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import { Link } from "react-router-dom";
 
 function StatsModActions() {
-  // Стани для фільтрів
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [moderatorId, setModeratorId] = useState("all"); // 'all' або ID
+  const [moderatorId, setModeratorId] = useState("all");
 
-  // Стан для списку модераторів (для dropdown)
   const [moderators, setModerators] = useState([]);
 
-  // Стани для результатів
   const [stats, setStats] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false); // Завантаження при відправці форми
-  const [loadingRefs, setLoadingRefs] = useState(true); // Завантаження довідників
+  const [loading, setLoading] = useState(false);
+  const [loadingRefs, setLoadingRefs] = useState(true);
 
-  // Завантажуємо список модераторів для фільтра
   useEffect(() => {
     const fetchModerators = async () => {
       setLoadingRefs(true);
       try {
-        const response = await axios.get(
-          "http://localhost:3001/api/moderators"
-        );
+        const response = await api.get("/moderators");
         setModerators(response.data);
       } catch (err) {
         console.error("Error fetching moderators:", err);
@@ -35,14 +28,13 @@ function StatsModActions() {
       }
     };
     fetchModerators();
-  }, []); // Завантажуємо 1 раз
+  }, []);
 
-  // Функція обробки відправки форми
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     setError(null);
-    setStats([]); // Очищуємо попередні результати
+    setStats([]);
 
     const params = {
       startDate: startDate || null,
@@ -52,11 +44,7 @@ function StatsModActions() {
     };
 
     try {
-      // Використовуємо POST для відправки параметрів [cite: 4684-4721]
-      const response = await axios.post(
-        "http://localhost:3001/api/stats/moderator-actions",
-        params
-      );
+      const response = await api.post("/stats/moderator-actions", params);
       setStats(response.data);
       if (response.data.length === 0) {
         setError("За вибраними критеріями нічого не знайдено.");
@@ -79,7 +67,6 @@ function StatsModActions() {
         </Link>
       </div>
       <div className="card-body">
-        {/* Форма для фільтрів */}
         <form
           onSubmit={handleSubmit}
           className="row g-3 mb-4 p-3 border rounded bg-light"
@@ -117,7 +104,7 @@ function StatsModActions() {
               className="form-select"
               value={moderatorId}
               onChange={(e) => setModeratorId(e.target.value)}
-              disabled={loadingRefs} // Блокуємо, поки не завантажили список
+              disabled={loadingRefs}
             >
               <option value="all">-- Всі модератори --</option>
               {moderators.map((mod) => (
@@ -138,7 +125,6 @@ function StatsModActions() {
           </div>
         </form>
 
-        {/* Таблиця результатів */}
         {loading && <p>Оновлення статистики...</p>}
         {error && !loading && (
           <div className="alert alert-warning">{error}</div>

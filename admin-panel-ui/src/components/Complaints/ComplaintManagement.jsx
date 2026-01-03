@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api"
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 function ComplaintManagement() {
@@ -30,8 +30,8 @@ function ComplaintManagement() {
     setLoading(true);
     try {
       const params = { ...currentFilters, ...currentSort };
-      const response = await axios.get(
-        "http://localhost:3001/api/manage/complaints/search",
+      const response = await api.get(
+        "/manage/complaints/search",
         { params }
       );
       setComplaints(response.data);

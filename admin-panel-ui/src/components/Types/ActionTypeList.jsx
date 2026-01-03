@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import { Link } from "react-router-dom";
 
 function ActionTypeList() {
@@ -7,8 +7,8 @@ function ActionTypeList() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/types/action-types")
+    api
+      .get("/types/action-types")
       .then((res) => setTypes(res.data))
       .catch((err) => console.error(err));
   }, [refreshTrigger]);
@@ -16,7 +16,7 @@ function ActionTypeList() {
   const handleDelete = async (id) => {
     if (!window.confirm("Видалити цей тип дії?")) return;
     try {
-      await axios.delete(`http://localhost:3001/api/types/action-types/${id}`);
+      await api.delete(`/types/action-types/${id}`);
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
       alert(err.response?.data?.error || "Помилка видалення");

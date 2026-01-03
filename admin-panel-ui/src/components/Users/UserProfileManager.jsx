@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import { useParams, Link } from "react-router-dom";
 import UserChatViewer from "./UserChatViewer";
 
@@ -17,9 +17,7 @@ function UserProfileManager() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:3001/api/manage/users/${id}/details`
-      );
+      const res = await api.get(`/manage/users/${id}/details`);
       setData(res.data);
 
       setFormData({
@@ -46,10 +44,7 @@ function UserProfileManager() {
 
   const saveGeneral = async () => {
     try {
-      await axios.put(
-        `http://localhost:3001/api/manage/users/${id}/general`,
-        formData
-      );
+      await api.put(`/manage/users/${id}/general`, formData);
       setEditMode(false);
       fetchData();
     } catch (err) {
@@ -64,7 +59,7 @@ function UserProfileManager() {
     if (!window.confirm(`Ви впевнені? Новий статус: ${newStatus}`)) return;
 
     try {
-      await axios.put(`http://localhost:3001/api/manage/users/${id}/status`, {
+      await api.put(`/manage/users/${id}/status`, {
         status: newStatus,
       });
       fetchData();
@@ -77,7 +72,7 @@ function UserProfileManager() {
     if (!window.confirm("УВАГА! Це незворотна дія. Продовжити?")) return;
 
     try {
-      await axios.put(`http://localhost:3001/api/manage/users/${id}/delete`);
+      await api.put(`/manage/users/${id}/delete`);
       alert("Користувача успішно видалено.");
       fetchData();
     } catch (err) {
@@ -87,7 +82,7 @@ function UserProfileManager() {
 
   const moderateBio = async (action) => {
     try {
-      await axios.put(`http://localhost:3001/api/manage/users/${id}/bio`, {
+      await api.put(`/manage/users/${id}/bio`, {
         action, // 'ban', 'unban', 'delete'
       });
       fetchData();
@@ -98,10 +93,7 @@ function UserProfileManager() {
 
   const moderatePhoto = async (photoId, action) => {
     try {
-      await axios.put(
-        `http://localhost:3001/api/manage/users/photos/${photoId}`,
-        { action }
-      );
+      await api.put(`/manage/users/photos/${photoId}`, { action });
       fetchData();
     } catch (err) {
       alert("Помилка модерації фото");
@@ -118,13 +110,9 @@ function UserProfileManager() {
     formData.append("image", selectedFile);
 
     try {
-      await axios.post(
-        `http://localhost:3001/api/manage/users/${id}/photos`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      await api.post(`/manage/users/${id}/photos`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       setSelectedFile(null);
       document.getElementById("fileInput").value = "";
@@ -138,13 +126,10 @@ function UserProfileManager() {
   const addComment = async () => {
     if (!newComment) return;
     try {
-      await axios.post(
-        `http://localhost:3001/api/manage/users/${id}/comments`,
-        {
-          moderator_id: 1,
-          comment_text: newComment,
-        }
-      );
+      await api.post(`/manage/users/${id}/comments`, {
+        moderator_id: 1,
+        comment_text: newComment,
+      });
       setNewComment("");
       fetchData();
     } catch (err) {

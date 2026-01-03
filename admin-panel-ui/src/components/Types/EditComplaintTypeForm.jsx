@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import { useNavigate, Link, useParams } from "react-router-dom";
 
 function EditComplaintTypeForm() {
@@ -8,8 +8,8 @@ function EditComplaintTypeForm() {
   const [formData, setFormData] = useState({ type_name: "", description: "" });
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/api/types/complaint-types/${id}`)
+    api
+      .get(`/types/complaint-types/${id}`)
       .then((res) =>
         setFormData({
           type_name: res.data.type_name,
@@ -22,10 +22,7 @@ function EditComplaintTypeForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `http://localhost:3001/api/types/complaint-types/${id}`,
-        formData
-      );
+      await api.put(`/types/complaint-types/${id}`, formData);
       navigate("/types/complaint");
     } catch (err) {
       alert("Помилка оновлення");

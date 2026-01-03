@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "./api";
 import { useNavigate, Link } from "react-router-dom";
 
 function AddComplaintTypeForm() {
@@ -9,11 +9,8 @@ function AddComplaintTypeForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "http://localhost:3001/api/types/complaint-types",
-        formData
-      );
-      navigate("/types/complaint"); // Возврат к списку
+      await api.post("/types/complaint-types", formData);
+      navigate("/types/complaint");
     } catch (err) {
       alert("Помилка створення");
     }

@@ -1,17 +1,15 @@
-// src/components/AddModeratorForm.jsx
 import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate, Link } from "react-router-dom"; // Імпортуємо useNavigate
+import api from "./api";
+import { useNavigate, Link } from "react-router-dom";
 
 function AddModeratorForm() {
-  const navigate = useNavigate(); // Ініціалізуємо хук
+  const navigate = useNavigate();
 
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [error, setError] = useState(null);
-  // success стан не потрібен, бо ми робимо редирект
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -22,16 +20,14 @@ function AddModeratorForm() {
     const newModerator = {
       login: login,
       email: email,
-      password: password, // ПАМ'ЯТАЙ ПРО ХЕШУВАННЯ НА БЕКЕНДІ!
+      password: password,
       full_name: fullName,
     };
 
     try {
-      await axios.post("http://localhost:3001/api/moderators", newModerator);
+      await api.post("/moderators", newModerator);
 
-      // Успіх! Перенаправляємо на головний список
       navigate("/moderators");
-      // onModeratorAdded() більше не потрібен
     } catch (err) {
       console.error("Error adding moderator:", err);
       if (err.response && err.response.data && err.response.data.error) {
@@ -56,7 +52,6 @@ function AddModeratorForm() {
         {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleSubmit}>
-          {/* ... (поля форми login, email, password, fullName - без змін) ... */}
           <div className="mb-3">
             <label htmlFor="modLogin" className="form-label">
               Логін

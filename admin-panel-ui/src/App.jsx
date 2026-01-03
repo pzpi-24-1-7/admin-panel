@@ -28,6 +28,8 @@ import ActionTypeList from "./components/Types/ActionTypeList";
 import AddActionTypeForm from "./components/Types/AddActionTypeForm";
 import EditActionTypeForm from "./components/Types/EditActionTypeForm";
 
+import { API_URL } from "./api";
+
 import "./App.css";
 
 function Dashboard() {
@@ -86,7 +88,7 @@ function Dashboard() {
               <div className="mb-4">
                 <h6>1. Звіт активності (Місяць)</h6>
                 <a
-                  href="http://localhost:3001/api/reports/monthly-activity"
+                  href={`${API_URL}/reports/monthly-activity`}
                   target="_blank"
                   className="btn btn-dark w-100"
                 >
@@ -106,7 +108,7 @@ function Dashboard() {
                   />
                   {dossierUserId ? (
                     <a
-                      href={`http://localhost:3001/api/reports/user-dossier/${dossierUserId}`}
+                      href={`${API_URL}/reports/user-dossier/${dossierUserId}`}
                       target="_blank"
                       className="btn btn-secondary"
                     >

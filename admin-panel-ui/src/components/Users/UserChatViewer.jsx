@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 
 function UserChatViewer({ userId }) {
   const [chats, setChats] = useState([]);
@@ -11,9 +11,7 @@ function UserChatViewer({ userId }) {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:3001/api/manage/users/${userId}/chats`
-        );
+        const res = await api.get(`/manage/users/${userId}/chats`);
         setChats(res.data);
       } catch (err) {
         console.error("Error loading chats");
@@ -31,9 +29,7 @@ function UserChatViewer({ userId }) {
     setSelectedPartner(partnerId);
     setLoadingMessages(true);
     try {
-      const res = await axios.get(
-        `http://localhost:3001/api/manage/users/${userId}/chats/${partnerId}`
-      );
+      const res = await api.get(`/manage/users/${userId}/chats/${partnerId}`);
       setMessages(res.data);
     } catch (err) {
       alert("Помилка завантаження повідомлень");

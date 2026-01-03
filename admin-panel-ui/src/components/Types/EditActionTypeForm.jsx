@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api"
 import { useNavigate, Link, useParams } from "react-router-dom";
 
 function EditActionTypeForm() {
@@ -11,8 +11,8 @@ function EditActionTypeForm() {
   });
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/api/types/action-types/${id}`)
+    api
+      .get(`/types/action-types/${id}`)
       .then((res) =>
         setFormData({
           action_name: res.data.action_name,
@@ -26,8 +26,8 @@ function EditActionTypeForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `http://localhost:3001/api/types/action-types/${id}`,
+      await api.put(
+        `/types/action-types/${id}`,
         formData
       );
       navigate("/types/action");

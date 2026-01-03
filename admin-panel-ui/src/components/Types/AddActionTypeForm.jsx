@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "./api";
 import { useNavigate, Link } from "react-router-dom";
 
 function AddActionTypeForm() {
@@ -12,10 +12,7 @@ function AddActionTypeForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "http://localhost:3001/api/types/action-types",
-        formData
-      );
+      await api.post("/types/action-types", formData);
       navigate("/types/action");
     } catch (err) {
       alert("Помилка створення");

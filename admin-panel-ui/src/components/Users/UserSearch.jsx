@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "./api";
 import { useNavigate } from "react-router-dom";
 
 function UserSearch() {
@@ -31,10 +31,7 @@ function UserSearch() {
     const params = { ...filters, ...sort };
 
     try {
-      const response = await axios.get(
-        "http://localhost:3001/api/manage/users/search",
-        { params }
-      );
+      const response = await api.get("/manage/users/search", { params });
       setUsers(response.data);
       setViewState("results");
       setActiveFilters(filters);

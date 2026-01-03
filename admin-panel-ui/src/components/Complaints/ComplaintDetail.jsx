@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 import Dropdown from "react-bootstrap/Dropdown";
@@ -19,9 +19,7 @@ function ComplaintDetail() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:3001/api/manage/complaints/${id}`
-        );
+        const res = await api.get(`/manage/complaints/${id}`);
         setData(res.data); // Зберігаємо все, що надіслав сервер
       } catch (err) {
         alert("Помилка завантаження");
@@ -34,14 +32,11 @@ function ComplaintDetail() {
 
   const handleStatusChange = async (newStatus) => {
     try {
-      await axios.put(
-        `http://localhost:3001/api/manage/complaints/${id}/resolve`,
-        {
-          status: newStatus,
-          moderator_comment: comment,
-          moderator_id: 17,
-        }
-      );
+      await api.put(`/manage/complaints/${id}/resolve`, {
+        status: newStatus,
+        moderator_comment: comment,
+        moderator_id: 17,
+      });
       // Опціонально: закрити дропдаун після успішної дії
       setShowDropdown(false);
       navigate("/complaints"); // Або можна перезавантажити дані: loadData()

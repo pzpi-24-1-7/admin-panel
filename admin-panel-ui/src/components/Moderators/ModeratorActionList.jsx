@@ -1,25 +1,19 @@
-// src/components/ModeratorActionList.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-// 1. Імпортуємо хуки для роботи з роутером
+import api from "./api";
 import { useParams, useLocation, Link } from "react-router-dom";
 
-// 2. Видаляємо пропси moderatorId та moderatorName
 function ModeratorActionList() {
-  // 3. Отримуємо параметри з URL. :id в App.jsx -> { id: "..." }
   const { id } = useParams();
-  // 4. Отримуємо 'location', щоб дістати 'state' (ім'я, яке ми передали)
   const location = useLocation();
 
-  const moderatorId = id; // ID модератора з URL
-  const moderatorName = location.state?.moderatorName; // Ім'я зі state (?. - опціонально)
+  const moderatorId = id;
+  const moderatorName = location.state?.moderatorName;
 
   const [actions, setActions] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // 5. Встановлюємо true, бо завантаження починається одразу
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 6. Якщо ID з якоїсь причини немає, не робимо запит
     if (!moderatorId) {
       setLoading(false);
       setError("ID модератора не знайдено в URL.");
@@ -30,17 +24,13 @@ function ModeratorActionList() {
       setLoading(true);
       setError(null);
       try {
-        // 7. Робимо запит, використовуючи moderatorId з URL
-        const response = await axios.get(
-          `http://localhost:3001/api/moderators/${moderatorId}/actions`
-        );
+        const response = await api.get(`/moderators/${moderatorId}/actions`);
         setActions(response.data);
       } catch (err) {
         console.error(
           `Error fetching actions for moderator ${moderatorId}:`,
           err
         );
-        // 8. Використовуємо ID у повідомленні про помилку, якщо ім'я не передалося
         setError(
           `Не вдалося завантажити дії для модератора ${
             moderatorName || `ID ${moderatorId}`
@@ -53,16 +43,12 @@ function ModeratorActionList() {
     };
 
     fetchActions();
-  }, [moderatorId]); // 9. Ефект тепер залежить від moderatorId з URL
-
-  // 10. `if (!moderatorId)` більше не потрібен тут, бо це тепер ціла сторінка
+  }, [moderatorId]);
 
   return (
     <div className="mt-4 card">
       <div className="card-header d-flex justify-content-between align-items-center">
-        {/* 11. Показуємо ім'я (якщо є) або ID */}
         <h4>Дії модератора: {moderatorName || `ID ${moderatorId}`}</h4>
-        {/* 12. Посилання "Назад" */}
         <Link to="/moderators" className="btn btn-sm btn-secondary">
           Назад до списку
         </Link>
@@ -71,7 +57,6 @@ function ModeratorActionList() {
         {loading && <p>Завантаження дій...</p>}
         {error && <div className="alert alert-danger">{error}</div>}
         {!loading && !error && (
-          // ... (вся розмітка таблиці <table>...</table> залишається без змін) ...
           <table className="table table-sm table-bordered">
             <thead>
               <tr>

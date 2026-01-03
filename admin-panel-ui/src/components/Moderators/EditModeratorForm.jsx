@@ -1,6 +1,6 @@
 // src/components/EditModeratorForm.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 function EditModeratorForm() {
@@ -14,18 +14,14 @@ function EditModeratorForm() {
 
   // Стани для UI
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // Завантаження даних для форми
-  const [saving, setSaving] = useState(false); // Збереження (оновлення)
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  // 1. Завантажуємо поточні дані модератора
   useEffect(() => {
     const fetchModerator = async () => {
       setLoading(true);
       try {
-        // Використовуємо GET /api/moderators/:id
-        const response = await axios.get(
-          `http://localhost:3001/api/moderators/${id}`
-        );
+        const response = await api.get(`/moderators/${id}`);
         const mod = response.data;
         // Заповнюємо стани даними з API
         setLogin(mod.login);
@@ -55,10 +51,7 @@ function EditModeratorForm() {
 
     try {
       // Використовуємо метод PUT
-      await axios.put(
-        `http://localhost:3001/api/moderators/${id}`,
-        updatedModerator
-      );
+      await api.put(`/moderators/${id}`, updatedModerator);
 
       // Успіх! Перенаправляємо на головний список
       navigate("/moderators");

@@ -1,10 +1,10 @@
 // src/components/AddComplaintForm.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate, Link } from "react-router-dom"; // 1. Імпортуємо хуки
+import api from "./api";
+import { useNavigate, Link } from "react-router-dom";
 
 function AddComplaintForm() {
-  const navigate = useNavigate(); // 3. Ініціалізуємо навігацію
+  const navigate = useNavigate();
 
   // Стани для полів форми
   const [reporterUserId, setReporterUserId] = useState("");
@@ -29,9 +29,9 @@ function AddComplaintForm() {
       setLoadingRefs(true);
       try {
         const [usersRes, modsRes, typesRes] = await Promise.all([
-          axios.get("http://localhost:3001/api/manage/users/search"),
-          axios.get("http://localhost:3001/api/moderators"),
-          axios.get("http://localhost:3001/api/types/complaint-types"),
+          api.get("/manage/users/search"),
+          api.get("/moderators"),
+          api.get("/types/complaint-types"),
         ]);
         setUsers(usersRes.data);
         setModerators(modsRes.data);
@@ -45,7 +45,7 @@ function AddComplaintForm() {
       }
     };
     fetchReferences();
-  }, []); // Завантажуємо 1 раз при відкритті
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -61,10 +61,7 @@ function AddComplaintForm() {
     };
 
     try {
-      await axios.post(
-        "http://localhost:3001/api/manage/complaints/add",
-        newComplaint
-      );
+      await api.post("/manage/complaints/add", newComplaint);
       navigate("/complaints");
     } catch (err) {
       console.error("Error adding complaint:", err);

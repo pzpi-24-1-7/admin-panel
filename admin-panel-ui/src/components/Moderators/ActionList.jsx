@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api"
 
 function ActionList({ refreshTrigger }) {
   const [actions, setActions] = useState([]);
@@ -12,7 +12,7 @@ function ActionList({ refreshTrigger }) {
       setError(null);
       try {
         // Запрос на новый эндпоинт для ВСЕХ действий
-        const response = await axios.get("http://localhost:3001/api/actions");
+        const response = await api.get("/actions");
         setActions(response.data);
       } catch (err) {
         console.error("Error fetching actions:", err);

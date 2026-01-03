@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import { Link } from "react-router-dom";
 
 function StatsModeratorPerformance() {
@@ -7,8 +7,8 @@ function StatsModeratorPerformance() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/stats/moderator-performance")
+    api
+      .get("/stats/moderator-performance")
       .then((res) => {
         setStats(res.data);
         setLoading(false);

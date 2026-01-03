@@ -1,6 +1,5 @@
-// src/components/StatsComplaintType.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import { Link } from "react-router-dom";
 
 function StatsComplaintType() {
@@ -13,10 +12,7 @@ function StatsComplaintType() {
       setLoading(true);
       setError(null);
       try {
-        // Запит до нового ендпоінту статистики
-        const response = await axios.get(
-          "http://localhost:3001/api/stats/complaints-by-type-status"
-        );
+        const response = await api.get("/stats/complaints-by-type-status");
         setStats(response.data);
       } catch (err) {
         console.error("Error fetching complaint stats:", err);
@@ -26,7 +22,7 @@ function StatsComplaintType() {
       }
     };
     fetchStats();
-  }, []); // Завантажуємо 1 раз
+  }, []);
 
   if (loading) return <p>Завантаження статистики...</p>;
 
@@ -57,7 +53,6 @@ function StatsComplaintType() {
               </tr>
             ) : (
               stats.map((row, index) => (
-                // Використовуємо index як key, оскільки комбінація 'type_name' + 'status' може бути не унікальною, якщо type_name = null
                 <tr key={index}>
                   <td>{row.type_name}</td>
                   <td>{row.status}</td>

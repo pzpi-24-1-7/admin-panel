@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import { Link } from "react-router-dom";
 
 function ComplaintTypeList() {
@@ -7,8 +7,8 @@ function ComplaintTypeList() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/types/complaint-types")
+    api
+      .get("/types/complaint-types")
       .then((res) => setTypes(res.data))
       .catch((err) => console.error(err));
   }, [refreshTrigger]);
@@ -16,9 +16,7 @@ function ComplaintTypeList() {
   const handleDelete = async (id) => {
     if (!window.confirm("Видалити цей тип скарги?")) return;
     try {
-      await axios.delete(
-        `http://localhost:3001/api/types/complaint-types/${id}`
-      );
+      await api.delete(`/types/complaint-types/${id}`);
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
       alert(err.response?.data?.error || "Помилка видалення");
