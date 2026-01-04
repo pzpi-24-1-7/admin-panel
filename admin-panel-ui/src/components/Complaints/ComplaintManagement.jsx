@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import api from "./api"
+import api from "../../api"
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 function ComplaintManagement() {

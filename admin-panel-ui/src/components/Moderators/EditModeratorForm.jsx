@@ -1,18 +1,15 @@
-// src/components/EditModeratorForm.jsx
 import React, { useState, useEffect } from "react";
-import api from "./api";
+import api from "../../api";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 function EditModeratorForm() {
-  const { id } = useParams(); // Отримуємо ID модератора з URL
-  const navigate = useNavigate(); // Для перенаправлення
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  // Стани для полів форми
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
 
-  // Стани для UI
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -23,7 +20,6 @@ function EditModeratorForm() {
       try {
         const response = await api.get(`/moderators/${id}`);
         const mod = response.data;
-        // Заповнюємо стани даними з API
         setLogin(mod.login);
         setEmail(mod.email);
         setFullName(mod.full_name);
@@ -35,9 +31,8 @@ function EditModeratorForm() {
       }
     };
     fetchModerator();
-  }, [id]); // Ефект залежить від ID з URL
+  }, [id]);
 
-  // 2. Функція відправки оновлених даних
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
@@ -50,15 +45,12 @@ function EditModeratorForm() {
     };
 
     try {
-      // Використовуємо метод PUT
       await api.put(`/moderators/${id}`, updatedModerator);
-
-      // Успіх! Перенаправляємо на головний список
       navigate("/moderators");
     } catch (err) {
       console.error("Error updating moderator:", err);
       if (err.response && err.response.data && err.response.data.error) {
-        setError(`Помилка: ${err.response.data.error}`); // Наприклад, дублікат email/login
+        setError(`Помилка: ${err.response.data.error}`);
       } else {
         setError("Не вдалося оновити модератора.");
       }
@@ -78,7 +70,6 @@ function EditModeratorForm() {
         </Link>
       </div>
       <div className="card-body">
-        {/* Помилка завантаження або збереження */}
         {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleSubmit}>

@@ -1,6 +1,6 @@
 // src/components/AddComplaintForm.jsx
 import React, { useState, useEffect } from "react";
-import api from "./api";
+import api from "../../api";
 import { useNavigate, Link } from "react-router-dom";
 
 function AddComplaintForm() {
