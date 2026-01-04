@@ -39,7 +39,7 @@ exports.getModeratorActions = async (req, res) => {
         SELECT ma.moderator_action_id, ma.target_user_id, at.action_name,
                ma.complaint_id, ma.reason_text, ma.action_at, ma.expires_at
         FROM moderator_action ma
-        JOIN Action_Type at ON ma.action_type_id = at.action_type_id
+        JOIN action_type at ON ma.action_type_id = at.action_type_id
         WHERE ma.moderator_id = ?
         ORDER BY ma.action_at DESC
     `;

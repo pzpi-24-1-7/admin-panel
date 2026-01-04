@@ -99,7 +99,7 @@ exports.getModeratorPerformance = async (req, res) => {
             MAX(ma.action_at) as last_active
         FROM moderator_action ma
         JOIN moderator m ON ma.moderator_id = m.moderator_id
-        JOIN Action_Type at ON ma.action_type_id = at.action_type_id
+        JOIN action_type at ON ma.action_type_id = at.action_type_id
         GROUP BY m.moderator_id, m.full_name
         ORDER BY total_actions DESC
     `;

@@ -7,7 +7,7 @@ exports.getAllActions = async (req, res) => {
                at.action_name, ma.complaint_id, ma.reason_text, ma.action_at, ma.expires_at
         FROM moderator_action ma
         JOIN moderator m ON ma.moderator_id = m.moderator_id
-        JOIN Action_Type at ON ma.action_type_id = at.action_type_id
+        JOIN action_type at ON ma.action_type_id = at.action_type_id
         ORDER BY ma.action_at DESC
     `;
   try {

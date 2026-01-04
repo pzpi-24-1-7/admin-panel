@@ -110,7 +110,7 @@ exports.createActionType = async (req, res) => {
   const { action_name, duration_days } = req.body;
   if (!action_name) return res.status(400).json({ error: "Name is required" });
 
-  const query = `INSERT INTO Action_Type (action_name, duration_days) VALUES (?, ?)`;
+  const query = `INSERT INTO action_type (action_name, duration_days) VALUES (?, ?)`;
   try {
     await runDBCommand(query, [action_name, duration_days || null]);
     res.json({ message: "Created successfully" });
@@ -125,7 +125,7 @@ exports.updateActionType = async (req, res) => {
   const { action_name, duration_days } = req.body;
   if (!action_name) return res.status(400).json({ error: "Name is required" });
 
-  const query = `UPDATE Action_Type SET action_name = ?, duration_days = ? WHERE action_type_id = ?`;
+  const query = `UPDATE action_type SET action_name = ?, duration_days = ? WHERE action_type_id = ?`;
   try {
     await runDBCommand(query, [action_name, duration_days || null, id]);
     res.json({ message: "Updated successfully" });
