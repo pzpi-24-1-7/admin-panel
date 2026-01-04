@@ -5,8 +5,8 @@ exports.getAllActions = async (req, res) => {
   const query = `
         SELECT ma.moderator_action_id, m.full_name as moderator_name, ma.target_user_id,
                at.action_name, ma.complaint_id, ma.reason_text, ma.action_at, ma.expires_at
-        FROM Moderator_Action ma
-        JOIN Moderator m ON ma.moderator_id = m.moderator_id
+        FROM moderator_action ma
+        JOIN moderator m ON ma.moderator_id = m.moderator_id
         JOIN Action_Type at ON ma.action_type_id = at.action_type_id
         ORDER BY ma.action_at DESC
     `;
@@ -35,7 +35,7 @@ exports.createAction = async (req, res) => {
     });
   }
   const query = `
-        INSERT INTO Moderator_Action (moderator_id, target_user_id, action_type_id, complaint_id, reason_text, action_at, expires_at)
+        INSERT INTO moderator_action (moderator_id, target_user_id, action_type_id, complaint_id, reason_text, action_at, expires_at)
         VALUES (?, ?, ?, ?, ?, NOW(), ?)
     `;
   const params = [

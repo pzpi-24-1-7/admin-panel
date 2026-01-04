@@ -225,7 +225,7 @@ exports.deleteUserSoft = async (req, res) => {
   const userId = req.params.id;
 
   try {
-    const profileQuery = `SELECT birth_date FROM Profile WHERE user_id = ?`;
+    const profileQuery = `SELECT birth_date FROM profile WHERE user_id = ?`;
     const profileResult = await runDBCommand(profileQuery, [userId]);
 
     let ageToSave = null;
@@ -260,7 +260,7 @@ exports.deleteUserSoft = async (req, res) => {
     );
 
     await runDBCommand(
-      `UPDATE complaint SET status = 'closed' WHERE target_user_id = ? AND status != 'closed'`,
+      `UPDATE  complaint SET status = 'closed' WHERE target_user_id = ? AND status != 'closed'`,
       [userId]
     );
 
@@ -280,8 +280,8 @@ exports.getUserChats = async (req, res) => {
                 u.login as partner_login,
                 u.email as partner_email,
                 MAX(m.sent_at) as last_message_at
-            FROM Message m
-            JOIN User u ON (u.user_id = m.sender_user_id OR u.user_id = m.recipient_user_id)
+            FROM message m
+            JOIN user u ON (u.user_id = m.sender_user_id OR u.user_id = m.recipient_user_id)
             WHERE (m.sender_user_id = ? OR m.recipient_user_id = ?)
               AND u.user_id != ?
             GROUP BY u.user_id, u.login, u.email
@@ -308,8 +308,8 @@ exports.getChatMessages = async (req, res) => {
                 m.sent_at,
                 m.read_status,
                 sender.login as sender_login
-            FROM Message m
-            JOIN User sender ON m.sender_user_id = sender.user_id
+            FROM message m
+            JOIN user sender ON m.sender_user_id = sender.user_id
             WHERE (m.sender_user_id = ? AND m.recipient_user_id = ?)
                OR (m.sender_user_id = ? AND m.recipient_user_id = ?)
             ORDER BY m.sent_at ASC

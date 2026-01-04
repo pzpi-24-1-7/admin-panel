@@ -26,8 +26,8 @@ exports.getUserDossierPdf = async (req, res) => {
             SELECT 
                 u.login, u.email, u.account_status, u.created_at, u.last_login,
                 p.first_name, p.city, p.country, p.birth_date, p.gender, p.bio_text
-            FROM User u
-            LEFT JOIN Profile p ON u.user_id = p.user_id
+            FROM user u
+            LEFT JOIN profile p ON u.user_id = p.user_id
             WHERE u.user_id = ?
         `;
     const userRes = await runDBCommand(userQuery, [userId]);
@@ -37,8 +37,8 @@ exports.getUserDossierPdf = async (req, res) => {
 
     const complaintsQuery = `
             SELECT ct.type_name, c.created_at, c.status, c.description
-            FROM Complaint c
-            JOIN Complaint_Type ct ON c.complaint_type_id = ct.complaint_type_id
+            FROM  complaint c
+            JOIN  complaint_type ct ON c.complaint_type_id = ct.complaint_type_id
             WHERE c.target_user_id = ?
             ORDER BY c.created_at DESC
         `;
@@ -173,8 +173,8 @@ exports.getMonthlyReportPdf = async (req, res) => {
             SELECT m.full_name, 
                    COUNT(ma.moderator_action_id) as total,
                    MAX(ma.action_at) as last_action
-            FROM Moderator_Action ma
-            JOIN Moderator m ON ma.moderator_id = m.moderator_id
+            FROM moderator_action ma
+            JOIN moderator m ON ma.moderator_id = m.moderator_id
             WHERE ma.action_at > DATE_SUB(NOW(), INTERVAL 1 MONTH)
             GROUP BY m.full_name
         `;

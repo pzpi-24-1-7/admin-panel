@@ -15,7 +15,7 @@ function StatsComplaintType() {
         const response = await api.get("/stats/complaints-by-type-status");
         setStats(response.data);
       } catch (err) {
-        console.error("Error fetching complaint stats:", err);
+        console.error("Error fetching  complaint stats:", err);
         setError("Не вдалося завантажити статистику скарг.");
       } finally {
         setLoading(false);

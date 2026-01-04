@@ -7,8 +7,8 @@ exports.getComplaintStats = async (req, res) => {
             ct.type_name,
             c.status,
             COUNT(*) as count
-        FROM Complaint c
-        JOIN Complaint_Type ct ON c.complaint_type_id = ct.complaint_type_id
+        FROM  complaint c
+        JOIN  complaint_type ct ON c.complaint_type_id = ct.complaint_type_id
         GROUP BY ct.type_name, c.status
         ORDER BY ct.type_name, c.status
     `;
@@ -16,7 +16,7 @@ exports.getComplaintStats = async (req, res) => {
     const stats = await runDBCommand(query);
     res.json(stats);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch complaint stats" });
+    res.status(500).json({ error: "Failed to fetch  complaint stats" });
   }
 };
 
@@ -27,8 +27,8 @@ exports.getActionStats = async (req, res) => {
         SELECT
             m.full_name,
             COUNT(ma.moderator_action_id) as action_count
-        FROM Moderator_Action ma
-        JOIN Moderator m ON ma.moderator_id = m.moderator_id
+        FROM moderator_action ma
+        JOIN moderator m ON ma.moderator_id = m.moderator_id
     `;
   const params = [];
   const whereConditions = [];
@@ -70,11 +70,11 @@ exports.getViolationTrends = async (req, res) => {
             ct.type_name,
             COUNT(c.complaint_id) as total_complaints,
             -- Считаем процент от общего числа
-            ROUND(COUNT(c.complaint_id) * 100.0 / (SELECT COUNT(*) FROM Complaint), 1) as percentage,
+            ROUND(COUNT(c.complaint_id) * 100.0 / (SELECT COUNT(*) FROM complaint), 1) as percentage,
             -- Сколько из них еще не обработано
             SUM(CASE WHEN c.status = 'new' THEN 1 ELSE 0 END) as pending_count
-        FROM Complaint c
-        JOIN Complaint_Type ct ON c.complaint_type_id = ct.complaint_type_id
+        FROM  complaint c
+        JOIN  complaint_type ct ON c.complaint_type_id = ct.complaint_type_id
         GROUP BY ct.type_name
         ORDER BY total_complaints DESC
     `;
@@ -97,8 +97,8 @@ exports.getModeratorPerformance = async (req, res) => {
             SUM(CASE WHEN at.action_name LIKE '%Попередження%' THEN 1 ELSE 0 END) as warnings_issued,
             -- Дата последнего действия
             MAX(ma.action_at) as last_active
-        FROM Moderator_Action ma
-        JOIN Moderator m ON ma.moderator_id = m.moderator_id
+        FROM moderator_action ma
+        JOIN moderator m ON ma.moderator_id = m.moderator_id
         JOIN Action_Type at ON ma.action_type_id = at.action_type_id
         GROUP BY m.moderator_id, m.full_name
         ORDER BY total_actions DESC

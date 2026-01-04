@@ -1,22 +1,22 @@
 const { runDBCommand } = require("../config/db");
 
-// ================= COMPLAINT TYPES =================
+// =================  COMPLAINT TYPES =================
 
 // GET ALL
 exports.getComplaintTypes = async (req, res) => {
-  const query = `SELECT complaint_type_id, type_name, description FROM Complaint_Type ORDER BY complaint_type_id`;
+  const query = `SELECT complaint_type_id, type_name, description FROM  complaint_type ORDER BY complaint_type_id`;
   try {
     const types = await runDBCommand(query);
     res.json(types);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch complaint types" });
+    res.status(500).json({ error: "Failed to fetch  complaint types" });
   }
 };
 
 // GET ONE (BY ID) - для редактирования
 exports.getComplaintTypeById = async (req, res) => {
   const id = req.params.id;
-  const query = `SELECT complaint_type_id, type_name, description FROM Complaint_Type WHERE complaint_type_id = ?`;
+  const query = `SELECT complaint_type_id, type_name, description FROM  complaint_type WHERE complaint_type_id = ?`;
   try {
     const result = await runDBCommand(query, [id]);
     if (result.length === 0)
@@ -32,7 +32,7 @@ exports.createComplaintType = async (req, res) => {
   const { type_name, description } = req.body;
   if (!type_name) return res.status(400).json({ error: "Name is required" });
 
-  const query = `INSERT INTO Complaint_Type (type_name, description) VALUES (?, ?)`;
+  const query = `INSERT INTO  complaint_type (type_name, description) VALUES (?, ?)`;
   try {
     await runDBCommand(query, [type_name, description]);
     res.json({ message: "Created successfully" });
@@ -47,7 +47,7 @@ exports.updateComplaintType = async (req, res) => {
   const { type_name, description } = req.body;
   if (!type_name) return res.status(400).json({ error: "Name is required" });
 
-  const query = `UPDATE Complaint_Type SET type_name = ?, description = ? WHERE complaint_type_id = ?`;
+  const query = `UPDATE  complaint_type SET type_name = ?, description = ? WHERE complaint_type_id = ?`;
   try {
     await runDBCommand(query, [type_name, description, id]);
     res.json({ message: "Updated successfully" });
@@ -59,7 +59,7 @@ exports.updateComplaintType = async (req, res) => {
 // DELETE
 exports.deleteComplaintType = async (req, res) => {
   const id = req.params.id;
-  const query = `DELETE FROM Complaint_Type WHERE complaint_type_id = ?`;
+  const query = `DELETE FROM  complaint_type WHERE complaint_type_id = ?`;
   try {
     await runDBCommand(query, [id]);
     res.json({ message: "Deleted successfully" });
@@ -82,7 +82,7 @@ exports.deleteComplaintType = async (req, res) => {
 
 // GET ALL
 exports.getActionTypes = async (req, res) => {
-  const query = `SELECT action_type_id, action_name, duration_days FROM Action_Type ORDER BY action_type_id`;
+  const query = `SELECT action_type_id, action_name, duration_days FROM action_type ORDER BY action_type_id`;
   try {
     const types = await runDBCommand(query);
     res.json(types);
@@ -94,7 +94,7 @@ exports.getActionTypes = async (req, res) => {
 // GET ONE
 exports.getActionTypeById = async (req, res) => {
   const id = req.params.id;
-  const query = `SELECT action_type_id, action_name, duration_days FROM Action_Type WHERE action_type_id = ?`;
+  const query = `SELECT action_type_id, action_name, duration_days FROM action_type WHERE action_type_id = ?`;
   try {
     const result = await runDBCommand(query, [id]);
     if (result.length === 0)
@@ -137,7 +137,7 @@ exports.updateActionType = async (req, res) => {
 // DELETE
 exports.deleteActionType = async (req, res) => {
   const id = req.params.id;
-  const query = `DELETE FROM Action_Type WHERE action_type_id = ?`;
+  const query = `DELETE FROM action_type WHERE action_type_id = ?`;
   try {
     await runDBCommand(query, [id]);
     res.json({ message: "Deleted successfully" });

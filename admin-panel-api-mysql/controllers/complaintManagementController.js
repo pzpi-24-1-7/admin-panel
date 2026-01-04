@@ -21,12 +21,12 @@ exports.searchComplaints = async (req, res) => {
         u_rep.email as reporter_email,
         u_tar.email as target_email,
         m.full_name as moderator_name
-    FROM Complaint c
-    JOIN Complaint_Type ct ON c.complaint_type_id = ct.complaint_type_id
-    LEFT JOIN User u_rep ON c.reporter_user_id = u_rep.user_id
-    LEFT JOIN User u_tar ON c.target_user_id = u_tar.user_id
-    LEFT JOIN Moderator m ON c.moderator_id = m.moderator_id
-    LEFT JOIN Moderator_Action ma ON c.complaint_id = ma.complaint_id
+    FROM  complaint c
+    JOIN  complaint_type ct ON c.complaint_type_id = ct.complaint_type_id
+    LEFT JOIN user u_rep ON c.reporter_user_id = u_rep.user_id
+    LEFT JOIN user u_tar ON c.target_user_id = u_tar.user_id
+    LEFT JOIN moderator m ON c.moderator_id = m.moderator_id
+    LEFT JOIN moderator_action ma ON c.complaint_id = ma.complaint_id
     WHERE 1=1
   `;
 
@@ -98,8 +98,8 @@ exports.getComplaintDetails = async (req, res) => {
                 c.reporter_user_id, u_rep.email as reporter_email,
                 c.target_user_id, u_tar.email as target_email,
                 c.moderator_id, m.full_name as moderator_name
-            FROM complaint c
-            JOIN complaint_type ct ON c.complaint_type_id = ct.complaint_type_id
+            FROM  complaint c
+            JOIN  complaint_type ct ON c.complaint_type_id = ct.complaint_type_id
             LEFT JOIN user u_rep ON c.reporter_user_id = u_rep.user_id
             LEFT JOIN user u_tar ON c.target_user_id = u_tar.user_id
             LEFT JOIN moderator m ON c.moderator_id = m.moderator_id
@@ -142,7 +142,7 @@ exports.resolveComplaint = async (req, res) => {
 
   try {
     await runDBCommand(
-      `UPDATE complaint SET status = ?, moderator_id = ? WHERE complaint_id = ?`,
+      `UPDATE  complaint SET status = ?, moderator_id = ? WHERE complaint_id = ?`,
       [status, moderator_id, id]
     );
 
@@ -177,7 +177,7 @@ exports.createComplaint = async (req, res) => {
     });
   }
   const query = `
-        INSERT INTO Complaint (reporter_user_id, target_user_id, moderator_id, complaint_type_id, description, status, created_at)
+        INSERT INTO  complaint (reporter_user_id, target_user_id, moderator_id, complaint_type_id, description, status, created_at)
         VALUES (?, ?, ?, ?, ?, 'new', NOW()) 
     `;
   const params = [

@@ -8,9 +8,9 @@ exports.getAllComplaints = async (req, res) => {
             m.full_name as moderator_name,
             ct.type_name as complaint_type_name,
             c.description, c.status, c.created_at
-        FROM Complaint c
-        LEFT JOIN Moderator m ON c.moderator_id = m.moderator_id
-        JOIN Complaint_Type ct ON c.complaint_type_id = ct.complaint_type_id
+        FROM  complaint c
+        LEFT JOIN moderator m ON c.moderator_id = m.moderator_id
+        JOIN  complaint_type ct ON c.complaint_type_id = ct.complaint_type_id
         ORDER BY c.created_at DESC
     `;
   try {
@@ -38,7 +38,7 @@ exports.createComplaint = async (req, res) => {
     });
   }
   const query = `
-        INSERT INTO Complaint (reporter_user_id, target_user_id, moderator_id, complaint_type_id, description, status, created_at)
+        INSERT INTO  complaint (reporter_user_id, target_user_id, moderator_id, complaint_type_id, description, status, created_at)
         VALUES (?, ?, ?, ?, ?, 'new', NOW()) 
     `;
   const params = [

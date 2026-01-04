@@ -2,7 +2,7 @@ const { runDBCommand } = require("../config/db");
 
 // GET /api/moderators
 exports.getAllModerators = async (req, res) => {
-  const query = `SELECT moderator_id, login, email, full_name FROM Moderator ORDER BY moderator_id`;
+  const query = `SELECT moderator_id, login, email, full_name FROM moderator ORDER BY moderator_id`;
   try {
     const moderators = await runDBCommand(query);
     res.json(moderators);
@@ -17,7 +17,7 @@ exports.getModeratorById = async (req, res) => {
   if (isNaN(moderatorId)) {
     return res.status(400).json({ error: "Invalid moderator ID format." });
   }
-  const query = `SELECT moderator_id, login, email, full_name FROM Moderator WHERE moderator_id = ?`;
+  const query = `SELECT moderator_id, login, email, full_name FROM moderator WHERE moderator_id = ?`;
   try {
     const result = await runDBCommand(query, [moderatorId]);
     if (result.length === 0) {
@@ -38,7 +38,7 @@ exports.getModeratorActions = async (req, res) => {
   const query = `
         SELECT ma.moderator_action_id, ma.target_user_id, at.action_name,
                ma.complaint_id, ma.reason_text, ma.action_at, ma.expires_at
-        FROM Moderator_Action ma
+        FROM moderator_action ma
         JOIN Action_Type at ON ma.action_type_id = at.action_type_id
         WHERE ma.moderator_id = ?
         ORDER BY ma.action_at DESC
@@ -58,7 +58,7 @@ exports.createModerator = async (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
   const password_hash = password; // ЗАГЛУШКА
-  const query = `INSERT INTO Moderator (login, email, password_hash, full_name) VALUES (?, ?, ?, ?)`;
+  const query = `INSERT INTO moderator (login, email, password_hash, full_name) VALUES (?, ?, ?, ?)`;
   const params = [login, email, password_hash, full_name];
   try {
     const result = await runDBCommand(query, params);
@@ -85,7 +85,7 @@ exports.updateModerator = async (req, res) => {
   if (!login || !email || !full_name) {
     return res.status(400).json({ error: "Missing required fields" });
   }
-  const query = `UPDATE Moderator SET login = ?, email = ?, full_name = ? WHERE moderator_id = ?`;
+  const query = `UPDATE moderator SET login = ?, email = ?, full_name = ? WHERE moderator_id = ?`;
   const params = [login, email, full_name, moderatorId];
   try {
     const result = await runDBCommand(query, params);
@@ -99,7 +99,7 @@ exports.updateModerator = async (req, res) => {
     } else {
       res
         .status(500)
-        .json({ error: "Failed to update moderator", details: err.message });
+        .json({ error: "Failed to UPDATE moderator", details: err.message });
     }
   }
 };
@@ -110,7 +110,7 @@ exports.deleteModerator = async (req, res) => {
   if (isNaN(moderatorId)) {
     return res.status(400).json({ error: "Invalid moderator ID format." });
   }
-  const query = `DELETE FROM Moderator WHERE moderator_id = ?`;
+  const query = `DELETE FROM moderator WHERE moderator_id = ?`;
   const params = [moderatorId];
   try {
     const result = await runDBCommand(query, params);
