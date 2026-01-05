@@ -16,7 +16,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors());
-app.use("/uploads", express.static("uploads")); // Открываем доступ к папке
+app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

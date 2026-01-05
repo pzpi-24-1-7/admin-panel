@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import api from "../../api"
+import api from "../../api";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 function ComplaintManagement() {
@@ -11,8 +11,8 @@ function ComplaintManagement() {
     status: searchParams.get("status") || "new",
     reporter_email: searchParams.get("reporter_email") || "",
     target_email: searchParams.get("target_email") || "",
-    startDate: searchParams.get("startDate") || "", // <---
-    endDate: searchParams.get("endDate") || "", // <---
+    startDate: searchParams.get("startDate") || "",
+    endDate: searchParams.get("endDate") || "",
   });
 
   const [sortConfig, setSortConfig] = useState({
@@ -30,10 +30,7 @@ function ComplaintManagement() {
     setLoading(true);
     try {
       const params = { ...currentFilters, ...currentSort };
-      const response = await api.get(
-        "/manage/complaints/search",
-        { params }
-      );
+      const response = await api.get("/manage/complaints/search", { params });
       setComplaints(response.data);
     } catch (err) {
       console.error(err);

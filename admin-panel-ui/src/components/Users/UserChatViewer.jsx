@@ -7,7 +7,6 @@ function UserChatViewer({ userId }) {
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
 
-  // 1. Завантаження списку чатів при монтуванні
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -20,10 +19,9 @@ function UserChatViewer({ userId }) {
     if (userId) fetchChats();
   }, [userId]);
 
-  // 2. Завантаження повідомлень при кліку на співрозмовника
   const loadMessages = async (partnerId) => {
     if (selectedPartner === partnerId) {
-      setSelectedPartner(null); // Закрити, якщо вже відкрито
+      setSelectedPartner(null);
       return;
     }
     setSelectedPartner(partnerId);

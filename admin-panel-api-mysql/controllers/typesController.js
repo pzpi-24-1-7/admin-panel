@@ -1,8 +1,5 @@
 const { runDBCommand } = require("../config/db");
 
-// =================  COMPLAINT TYPES =================
-
-// GET ALL
 exports.getComplaintTypes = async (req, res) => {
   const query = `SELECT complaint_type_id, type_name, description FROM  complaint_type ORDER BY complaint_type_id`;
   try {
@@ -13,7 +10,6 @@ exports.getComplaintTypes = async (req, res) => {
   }
 };
 
-// GET ONE (BY ID) - для редактирования
 exports.getComplaintTypeById = async (req, res) => {
   const id = req.params.id;
   const query = `SELECT complaint_type_id, type_name, description FROM  complaint_type WHERE complaint_type_id = ?`;
@@ -27,7 +23,6 @@ exports.getComplaintTypeById = async (req, res) => {
   }
 };
 
-// CREATE
 exports.createComplaintType = async (req, res) => {
   const { type_name, description } = req.body;
   if (!type_name) return res.status(400).json({ error: "Name is required" });
@@ -41,7 +36,6 @@ exports.createComplaintType = async (req, res) => {
   }
 };
 
-// UPDATE
 exports.updateComplaintType = async (req, res) => {
   const id = req.params.id;
   const { type_name, description } = req.body;
@@ -56,7 +50,6 @@ exports.updateComplaintType = async (req, res) => {
   }
 };
 
-// DELETE
 exports.deleteComplaintType = async (req, res) => {
   const id = req.params.id;
   const query = `DELETE FROM  complaint_type WHERE complaint_type_id = ?`;
@@ -64,7 +57,6 @@ exports.deleteComplaintType = async (req, res) => {
     await runDBCommand(query, [id]);
     res.json({ message: "Deleted successfully" });
   } catch (err) {
-    // Обработка ошибки внешнего ключа (если тип уже используется в жалобах)
     if (err.code === "ER_ROW_IS_REFERENCED_2") {
       res
         .status(400)
@@ -78,9 +70,6 @@ exports.deleteComplaintType = async (req, res) => {
   }
 };
 
-// ================= ACTION TYPES =================
-
-// GET ALL
 exports.getActionTypes = async (req, res) => {
   const query = `SELECT action_type_id, action_name, duration_days FROM action_type ORDER BY action_type_id`;
   try {
@@ -91,7 +80,6 @@ exports.getActionTypes = async (req, res) => {
   }
 };
 
-// GET ONE
 exports.getActionTypeById = async (req, res) => {
   const id = req.params.id;
   const query = `SELECT action_type_id, action_name, duration_days FROM action_type WHERE action_type_id = ?`;
@@ -105,7 +93,6 @@ exports.getActionTypeById = async (req, res) => {
   }
 };
 
-// CREATE
 exports.createActionType = async (req, res) => {
   const { action_name, duration_days } = req.body;
   if (!action_name) return res.status(400).json({ error: "Name is required" });
@@ -119,7 +106,6 @@ exports.createActionType = async (req, res) => {
   }
 };
 
-// UPDATE
 exports.updateActionType = async (req, res) => {
   const id = req.params.id;
   const { action_name, duration_days } = req.body;
@@ -134,7 +120,6 @@ exports.updateActionType = async (req, res) => {
   }
 };
 
-// DELETE
 exports.deleteActionType = async (req, res) => {
   const id = req.params.id;
   const query = `DELETE FROM action_type WHERE action_type_id = ?`;

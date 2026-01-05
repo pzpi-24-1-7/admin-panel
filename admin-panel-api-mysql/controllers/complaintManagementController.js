@@ -1,15 +1,14 @@
 const { runDBCommand } = require("../config/db");
 
 exports.searchComplaints = async (req, res) => {
-  // Параметры из URL
   const {
     search,
     status,
     moderator_id,
     reporter_email,
     target_email,
-    startDate, // <--- НОВЕ
-    endDate, // <--- НОВЕ
+    startDate,
+    endDate,
     sortBy,
     sortOrder,
   } = req.query;
@@ -37,18 +36,14 @@ exports.searchComplaints = async (req, res) => {
     params.push(search, `%${search}%`, `%${search}%`);
   }
 
-  // --- НОВА ЛОГІКА ДАТ ---
   if (startDate) {
     query += ` AND c.created_at >= ?`;
     params.push(startDate);
   }
   if (endDate) {
-    // Використовуємо DATE_ADD, щоб включити кінець дня (якщо в базі datetime)
-    // Наприклад, якщо вибрали 2023-10-25, то шукаємо все, що менше 2023-10-26
     query += ` AND c.created_at < DATE_ADD(?, INTERVAL 1 DAY)`;
     params.push(endDate);
   }
-  // -----------------------
 
   if (status && status !== "all") {
     query += ` AND c.status = ?`;
@@ -57,7 +52,6 @@ exports.searchComplaints = async (req, res) => {
     query += ` AND c.status = 'new'`;
   }
 
-  // ... (решта коду без змін: moderator_id, email фільтри, сортування) ...
   if (moderator_id) {
     query += ` AND c.moderator_id = ?`;
     params.push(moderator_id);

@@ -57,7 +57,7 @@ exports.createModerator = async (req, res) => {
   if (!login || !email || !password || !full_name) {
     return res.status(400).json({ error: "Missing required fields" });
   }
-  const password_hash = password; // ЗАГЛУШКА
+  const password_hash = password;
   const query = `INSERT INTO moderator (login, email, password_hash, full_name) VALUES (?, ?, ?, ?)`;
   const params = [login, email, password_hash, full_name];
   try {

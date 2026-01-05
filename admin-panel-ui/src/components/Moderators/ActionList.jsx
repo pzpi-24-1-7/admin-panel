@@ -11,7 +11,6 @@ function ActionList({ refreshTrigger }) {
       setLoading(true);
       setError(null);
       try {
-        // Запрос на новый эндпоинт для ВСЕХ действий
         const response = await api.get("/actions");
         setActions(response.data);
       } catch (err) {

@@ -1,6 +1,5 @@
 const { runDBCommand } = require("../config/db");
 
-// GET /api/stats/complaints-by-type-status
 exports.getComplaintStats = async (req, res) => {
   const query = `
         SELECT
@@ -20,7 +19,6 @@ exports.getComplaintStats = async (req, res) => {
   }
 };
 
-// POST /api/stats/moderator-actions
 exports.getActionStats = async (req, res) => {
   const { startDate, endDate, moderatorId } = req.body;
   let query = `
@@ -86,16 +84,13 @@ exports.getViolationTrends = async (req, res) => {
   }
 };
 
-// 2. Статистика "Эффективность команды" (Кто и как наказывает?)
 exports.getModeratorPerformance = async (req, res) => {
   const query = `
         SELECT 
             m.full_name,
             COUNT(ma.moderator_action_id) as total_actions,
-            -- Подсчитываем конкретные виды наказаний
             SUM(CASE WHEN at.action_name LIKE '%Блокування%' THEN 1 ELSE 0 END) as bans_issued,
             SUM(CASE WHEN at.action_name LIKE '%Попередження%' THEN 1 ELSE 0 END) as warnings_issued,
-            -- Дата последнего действия
             MAX(ma.action_at) as last_active
         FROM moderator_action ma
         JOIN moderator m ON ma.moderator_id = m.moderator_id

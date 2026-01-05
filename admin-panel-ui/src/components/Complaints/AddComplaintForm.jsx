@@ -1,4 +1,3 @@
-// src/components/AddComplaintForm.jsx
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 import { useNavigate, Link } from "react-router-dom";
@@ -6,24 +5,20 @@ import { useNavigate, Link } from "react-router-dom";
 function AddComplaintForm() {
   const navigate = useNavigate();
 
-  // Стани для полів форми
   const [reporterUserId, setReporterUserId] = useState("");
   const [targetUserId, setTargetUserId] = useState("");
   const [moderatorId, setModeratorId] = useState("");
   const [complaintTypeId, setComplaintTypeId] = useState("");
   const [description, setDescription] = useState("");
 
-  // Стани для випадаючих списків
   const [users, setUsers] = useState([]);
   const [moderators, setModerators] = useState([]);
   const [complaintTypes, setComplaintTypes] = useState([]);
 
-  // Стани для UI
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingRefs, setLoadingRefs] = useState(true);
 
-  // Завантаження довідників (Users, Moderators, ComplaintTypes)
   useEffect(() => {
     const fetchReferences = async () => {
       setLoadingRefs(true);

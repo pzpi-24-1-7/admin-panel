@@ -10,17 +10,16 @@ function ComplaintDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [data, setData] = useState(null); // Зберігаємо весь об'єкт { complaint, actions }
+  const [data, setData] = useState(null);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(true);
-  const [showDropdown, setShowDropdown] = useState(false); // Стан для керування відображенням Dropup
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  // Завантаження даних
   useEffect(() => {
     const loadData = async () => {
       try {
         const res = await api.get(`/manage/complaints/${id}`);
-        setData(res.data); // Зберігаємо все, що надіслав сервер
+        setData(res.data);
       } catch (err) {
         alert("Помилка завантаження");
       } finally {
@@ -37,9 +36,8 @@ function ComplaintDetail() {
         moderator_comment: comment,
         moderator_id: 17,
       });
-      // Опціонально: закрити дропдаун після успішної дії
       setShowDropdown(false);
-      navigate("/complaints"); // Або можна перезавантажити дані: loadData()
+      navigate("/complaints");
     } catch (err) {
       alert("Помилка оновлення");
     }
@@ -48,7 +46,7 @@ function ComplaintDetail() {
   if (loading) return <div className="text-center mt-5">Завантаження...</div>;
   if (!data) return <div className="text-center mt-5">Not Found</div>;
 
-  const { complaint, actions } = data; // Деструктуризація
+  const { complaint, actions } = data;
 
   return (
     <div className="container mt-4 pb-5">
